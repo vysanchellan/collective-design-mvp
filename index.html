@@ -22,7 +22,7 @@
     fetchpriority="high"
   />
 
-  <link rel="stylesheet" href="./styles.css?v=11" />
+  <link rel="stylesheet" href="./styles.css?v=13" />
 </head>
 <body>
   <!-- Intro / Splash -->
@@ -126,22 +126,22 @@
 
         <div class="cards">
           <article class="card reveal tilt">
-            <span class="badge">01</span>
+            <span class="num-pill" aria-label="Step 1">01</span>
             <h3>Discovery & Strategy</h3>
             <p>We align goals, audience, budget, and timeline before curation starts.</p>
           </article>
           <article class="card reveal delay-1 tilt">
-            <span class="badge">02</span>
+            <span class="num-pill" aria-label="Step 2">02</span>
             <h3>Premium Sourcing</h3>
             <p>We source high-quality options tailored to campaign intent and brand tier.</p>
           </article>
           <article class="card reveal delay-2 tilt">
-            <span class="badge">03</span>
+            <span class="num-pill" aria-label="Step 3">03</span>
             <h3>Brand Integration</h3>
             <p>Finishes, placements, and details are refined for cohesive brand impact.</p>
           </article>
           <article class="card reveal delay-3 tilt">
-            <span class="badge">04</span>
+            <span class="num-pill" aria-label="Step 4">04</span>
             <h3>Execution & Delivery</h3>
             <p>We manage approvals, production, and handoff with clear communication.</p>
           </article>
@@ -157,10 +157,26 @@
         </div>
 
         <div class="timeline">
-          <article class="step reveal"><span>01</span><h3>Brief</h3><p>Goals, audience, budget, timeline.</p></article>
-          <article class="step reveal delay-1"><span>02</span><h3>Curate</h3><p>Tailored concepts and quality options.</p></article>
-          <article class="step reveal delay-2"><span>03</span><h3>Refine</h3><p>Branding and finishing approvals.</p></article>
-          <article class="step reveal delay-3"><span>04</span><h3>Deliver</h3><p>Production oversight and handoff.</p></article>
+          <article class="step reveal">
+            <span class="step-num">01</span>
+            <h3>Brief</h3>
+            <p>Goals, audience, budget, timeline.</p>
+          </article>
+          <article class="step reveal delay-1">
+            <span class="step-num">02</span>
+            <h3>Curate</h3>
+            <p>Tailored concepts and quality options.</p>
+          </article>
+          <article class="step reveal delay-2">
+            <span class="step-num">03</span>
+            <h3>Refine</h3>
+            <p>Branding and finishing approvals.</p>
+          </article>
+          <article class="step reveal delay-3">
+            <span class="step-num">04</span>
+            <h3>Deliver</h3>
+            <p>Production oversight and handoff.</p>
+          </article>
         </div>
       </div>
     </section>
@@ -200,9 +216,12 @@
   <footer class="site-footer">
     <div class="container footer-wrap">
       <p>© 2026 Collective Design. All rights reserved.</p>
-      <a href="#top">Back to top ↑</a>
+      <span class="footer-note">Crafted for premium brand experiences.</span>
     </div>
   </footer>
+
+  <!-- Floating Back to Top Button -->
+  <button id="backToTop" class="back-to-top" type="button" aria-label="Back to top">↑</button>
 
   <!-- Floating AI Chatbot (MVP UI only) -->
   <div class="chatbot" id="chatbot">
@@ -231,7 +250,7 @@
         <div class="chat-msg ai">
           <p>
             Hi! I’m the Collective Design AI assistant.<br />
-            In the next version, I’ll help you with custom gifting recommendations,
+            In the next version, I’ll help with gifting recommendations,
             timelines, and quote guidance.
           </p>
         </div>
@@ -244,6 +263,6 @@
     </section>
   </div>
 
-  <script src="./script.js?v=11"></script>
+  <script src="./script.js?v=13"></script>
 </body>
 </html>
