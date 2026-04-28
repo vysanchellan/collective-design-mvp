@@ -223,20 +223,4 @@
   });
 
   chatClose?.addEventListener("click", closeChat);
-
-  // Back to top
-  const backToTopBtn = document.getElementById("backToTop");
-
-  const updateBackToTopVisibility = () => {
-    if (!backToTopBtn) return;
-    if (window.scrollY > 420) backToTopBtn.classList.add("show");
-    else backToTopBtn.classList.remove("show");
-  };
-
-  window.addEventListener("scroll", updateBackToTopVisibility, { passive: true });
-  updateBackToTopVisibility();
-
-  backToTopBtn?.addEventListener("click", () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  });
 })();
