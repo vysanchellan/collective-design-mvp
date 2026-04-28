@@ -111,11 +111,17 @@ p{margin:0;color:var(--muted);line-height:1.6}
 }
 
 /* Header */
+./* Increase space under navbar */
 .site-header{
-  position:sticky;
-  top:0;
-  z-index:100;
-  padding:16px 0 22px; /* increased spacing */
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: 16px 0 28px; /* was 16px 0 22px */
+}
+
+/* Push hero content further down */
+.hero{
+  padding-top: 132px; /* was 108px */
 }
 .nav-wrap{
   min-height:70px;border-radius:999px;padding:8px 12px;
