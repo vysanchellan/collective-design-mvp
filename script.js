@@ -1,13 +1,11 @@
 (() => {
-  // Theme toggle
+  // ---------- Theme Toggle ----------
   const root = document.documentElement;
   const toggle = document.getElementById("themeToggle");
-  const saved = localStorage.getItem("cd_theme");
-
-  if (saved === "dark" || saved === "light") {
-    root.setAttribute("data-theme", saved);
+  const savedTheme = localStorage.getItem("cd_theme");
+  if (savedTheme === "dark" || savedTheme === "light") {
+    root.setAttribute("data-theme", savedTheme);
   }
-
   toggle?.addEventListener("click", () => {
     const current = root.getAttribute("data-theme") || "dark";
     const next = current === "dark" ? "light" : "dark";
@@ -15,59 +13,101 @@
     localStorage.setItem("cd_theme", next);
   });
 
-  // Intro animation control
+  // ---------- Intro (smooth image handling) ----------
   const intro = document.getElementById("intro");
+  const introLogo = document.getElementById("introLogo");
   const skipIntro = document.getElementById("skipIntro");
-  const introSeen = sessionStorage.getItem("cd_intro_seen");
+
+  const INTRO_MIN_MS = 1700;   // minimum display so it feels intentional
+  const INTRO_MAX_MS = 4500;   // fallback timeout
+  const INTRO_SEEN_KEY = "cd_intro_seen_v2";
+
+  let introClosed = false;
+  const introStart = performance.now();
 
   const closeIntro = () => {
-    if (!intro) return;
+    if (!intro || introClosed) return;
+    introClosed = true;
     intro.classList.add("hidden");
-    sessionStorage.setItem("cd_intro_seen", "1");
-    setTimeout(() => {
-      intro.style.display = "none";
-    }, 750);
+    sessionStorage.setItem(INTRO_SEEN_KEY, "1");
+    setTimeout(() => { intro.style.display = "none"; }, 760);
   };
 
-  if (introSeen) {
+  const closeWhenReady = () => {
+    const elapsed = performance.now() - introStart;
+    const waitMore = Math.max(0, INTRO_MIN_MS - elapsed);
+    setTimeout(closeIntro, waitMore);
+  };
+
+  // If user already saw intro this tab, skip it immediately
+  if (sessionStorage.getItem(INTRO_SEEN_KEY)) {
     if (intro) {
       intro.classList.add("hidden");
       intro.style.display = "none";
     }
-  } else {
-    setTimeout(closeIntro, 2600);
+  } else if (intro && introLogo) {
+    // Pre-decode image to avoid split/half render effect
+    const finalizeLogo = () => {
+      intro.classList.add("logo-ready");
+      closeWhenReady();
+    };
+
+    // Hard fallback (network slow / blocked)
+    const failSafe = setTimeout(() => {
+      intro.classList.add("logo-ready");
+      closeIntro();
+    }, INTRO_MAX_MS);
+
+    const handleReady = () => {
+      clearTimeout(failSafe);
+      // decode() ensures image is fully decoded before showing
+      if (typeof introLogo.decode === "function") {
+        introLogo.decode()
+          .then(finalizeLogo)
+          .catch(finalizeLogo);
+      } else {
+        finalizeLogo();
+      }
+    };
+
+    if (introLogo.complete && introLogo.naturalWidth > 0) {
+      handleReady();
+    } else {
+      introLogo.addEventListener("load", handleReady, { once: true });
+      introLogo.addEventListener("error", () => {
+        clearTimeout(failSafe);
+        intro.classList.add("logo-ready");
+        closeWhenReady();
+      }, { once: true });
+    }
+
+    skipIntro?.addEventListener("click", closeIntro);
   }
 
-  skipIntro?.addEventListener("click", closeIntro);
-
-  // Reveal on scroll
+  // ---------- Reveal on Scroll ----------
   const revealEls = document.querySelectorAll(".reveal");
-  const io = new IntersectionObserver(
+  const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           entry.target.classList.add("in");
-          io.unobserve(entry.target);
+          observer.unobserve(entry.target);
         }
       });
     },
     { threshold: 0.18 }
   );
-  revealEls.forEach((el) => io.observe(el));
+  revealEls.forEach((el) => observer.observe(el));
 
-  // Cursor glow
+  // ---------- Cursor Glow ----------
   const glow = document.getElementById("cursorGlow");
-  window.addEventListener(
-    "pointermove",
-    (e) => {
-      if (!glow) return;
-      glow.style.left = `${e.clientX}px`;
-      glow.style.top = `${e.clientY}px`;
-    },
-    { passive: true }
-  );
+  window.addEventListener("pointermove", (e) => {
+    if (!glow) return;
+    glow.style.left = `${e.clientX}px`;
+    glow.style.top = `${e.clientY}px`;
+  }, { passive: true });
 
-  // Light tilt effect
+  // ---------- Light Tilt ----------
   const tiltEls = document.querySelectorAll(".tilt");
   tiltEls.forEach((el) => {
     el.addEventListener("mousemove", (e) => {
@@ -80,13 +120,12 @@
       const dy = (y - cy) / cy;
       el.style.transform = `perspective(900px) rotateX(${(-dy * 4).toFixed(2)}deg) rotateY(${(dx * 5).toFixed(2)}deg) translateY(-2px)`;
     });
-
     el.addEventListener("mouseleave", () => {
       el.style.transform = "perspective(900px) rotateX(0deg) rotateY(0deg) translateY(0)";
     });
   });
 
-  // Contact form validation
+  // ---------- Contact Form ----------
   const form = document.getElementById("inquiryForm");
   if (!form) return;
 
