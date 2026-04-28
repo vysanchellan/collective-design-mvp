@@ -1,28 +1,84 @@
 (() => {
-  // Sticky header state
-  const header = document.querySelector(".site-header");
-  const onScroll = () => {
-    if (!header) return;
-    if (window.scrollY > 8) header.classList.add("scrolled");
-    else header.classList.remove("scrolled");
-  };
-  onScroll();
-  window.addEventListener("scroll", onScroll, { passive: true });
-
-  // Theme toggle with persistence
+  // Theme toggle
   const root = document.documentElement;
   const toggle = document.getElementById("themeToggle");
-  const storedTheme = localStorage.getItem("cd_theme");
-
-  if (storedTheme === "light" || storedTheme === "dark") {
-    root.setAttribute("data-theme", storedTheme);
+  const saved = localStorage.getItem("cd_theme");
+  if (saved === "dark" || saved === "light") {
+    root.setAttribute("data-theme", saved);
   }
-
   toggle?.addEventListener("click", () => {
     const current = root.getAttribute("data-theme") || "dark";
     const next = current === "dark" ? "light" : "dark";
     root.setAttribute("data-theme", next);
     localStorage.setItem("cd_theme", next);
+  });
+
+  // Intro animation control
+  const intro = document.getElementById("intro");
+  const skipIntro = document.getElementById("skipIntro");
+  const introSeen = sessionStorage.getItem("cd_intro_seen");
+
+  const closeIntro = () => {
+    if (!intro) return;
+    intro.classList.add("hidden");
+    sessionStorage.setItem("cd_intro_seen", "1");
+    setTimeout(() => {
+      intro.style.display = "none";
+    }, 750);
+  };
+
+  if (introSeen) {
+    intro?.classList.add("hidden");
+    if (intro) intro.style.display = "none";
+  } else {
+    setTimeout(closeIntro, 2600);
+  }
+
+  skipIntro?.addEventListener("click", closeIntro);
+
+  // Reveal on scroll
+  const revealEls = document.querySelectorAll(".reveal");
+  const io = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("in");
+          io.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.18 }
+  );
+  revealEls.forEach((el) => io.observe(el));
+
+  // Cursor glow
+  const glow = document.getElementById("cursorGlow");
+  window.addEventListener(
+    "pointermove",
+    (e) => {
+      if (!glow) return;
+      glow.style.left = `${e.clientX}px`;
+      glow.style.top = `${e.clientY}px`;
+    },
+    { passive: true }
+  );
+
+  // Light tilt effect
+  const tiltEls = document.querySelectorAll(".tilt");
+  tiltEls.forEach((el) => {
+    el.addEventListener("mousemove", (e) => {
+      const rect = el.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const cx = rect.width / 2;
+      const cy = rect.height / 2;
+      const dx = (x - cx) / cx;
+      const dy = (y - cy) / cy;
+      el.style.transform = `perspective(900px) rotateX(${(-dy * 4).toFixed(2)}deg) rotateY(${(dx * 5).toFixed(2)}deg) translateY(-2px)`;
+    });
+    el.addEventListener("mouseleave", () => {
+      el.style.transform = "perspective(900px) rotateX(0deg) rotateY(0deg) translateY(0)";
+    });
   });
 
   // Contact form validation
@@ -36,11 +92,10 @@
   const nameError = document.getElementById("nameError");
   const emailError = document.getElementById("emailError");
   const messageError = document.getElementById("messageError");
-  const formStatus = document.getElementById("formStatus");
+  const status = document.getElementById("formStatus");
   const submitBtn = form.querySelector(".submit-btn");
 
-  const validEmail = (value) =>
-    /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test((value || "").trim());
+  const validEmail = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test((v || "").trim());
 
   function clearErrors() {
     nameError.textContent = "";
@@ -56,36 +111,32 @@
       nameError.textContent = "Please enter your full name.";
       ok = false;
     }
-
-    if (!validEmail(emailInput.value)) {
+    if (!validEmail(emailInput.value || "")) {
       emailError.textContent = "Please enter a valid business email.";
       ok = false;
     }
-
     if ((messageInput.value || "").trim().length < 12) {
       messageError.textContent = "Please provide more project details.";
       ok = false;
     }
-
     return ok;
   }
 
   [nameInput, emailInput, messageInput].forEach((el) => {
     el?.addEventListener("input", () => {
-      formStatus.textContent = "";
-      formStatus.className = "form-status";
+      status.textContent = "";
+      status.className = "form-status";
     });
   });
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
-
-    formStatus.textContent = "";
-    formStatus.className = "form-status";
+    status.textContent = "";
+    status.className = "form-status";
 
     if (!validate()) {
-      formStatus.textContent = "Please fix the highlighted fields.";
-      formStatus.classList.add("error");
+      status.textContent = "Please fix the highlighted fields.";
+      status.classList.add("error");
       return;
     }
 
@@ -94,14 +145,13 @@
     submitBtn.textContent = "Sending...";
 
     try {
-      // MVP simulated submission
-      await new Promise((resolve) => setTimeout(resolve, 900));
+      await new Promise((r) => setTimeout(r, 900));
       form.reset();
-      formStatus.textContent = "Inquiry sent successfully. We will contact you shortly.";
-      formStatus.classList.add("success");
+      status.textContent = "Inquiry sent successfully. We’ll contact you shortly.";
+      status.classList.add("success");
     } catch {
-      formStatus.textContent = "Something went wrong. Please try again.";
-      formStatus.classList.add("error");
+      status.textContent = "Something went wrong. Please try again.";
+      status.classList.add("error");
     } finally {
       submitBtn.disabled = false;
       submitBtn.textContent = original;
