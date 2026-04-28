@@ -13,13 +13,13 @@
     localStorage.setItem("cd_theme", next);
   });
 
-  // ---------- Intro (smooth image handling) ----------
+  // ---------- Intro ----------
   const intro = document.getElementById("intro");
   const introLogo = document.getElementById("introLogo");
   const skipIntro = document.getElementById("skipIntro");
 
-  const INTRO_MIN_MS = 1700;   // minimum display so it feels intentional
-  const INTRO_MAX_MS = 4500;   // fallback timeout
+  const INTRO_MIN_MS = 1700;
+  const INTRO_MAX_MS = 4500;
   const INTRO_SEEN_KEY = "cd_intro_seen_v2";
 
   let introClosed = false;
@@ -39,20 +39,17 @@
     setTimeout(closeIntro, waitMore);
   };
 
-  // If user already saw intro this tab, skip it immediately
   if (sessionStorage.getItem(INTRO_SEEN_KEY)) {
     if (intro) {
       intro.classList.add("hidden");
       intro.style.display = "none";
     }
   } else if (intro && introLogo) {
-    // Pre-decode image to avoid split/half render effect
     const finalizeLogo = () => {
       intro.classList.add("logo-ready");
       closeWhenReady();
     };
 
-    // Hard fallback (network slow / blocked)
     const failSafe = setTimeout(() => {
       intro.classList.add("logo-ready");
       closeIntro();
@@ -60,11 +57,8 @@
 
     const handleReady = () => {
       clearTimeout(failSafe);
-      // decode() ensures image is fully decoded before showing
       if (typeof introLogo.decode === "function") {
-        introLogo.decode()
-          .then(finalizeLogo)
-          .catch(finalizeLogo);
+        introLogo.decode().then(finalizeLogo).catch(finalizeLogo);
       } else {
         finalizeLogo();
       }
@@ -86,17 +80,14 @@
 
   // ---------- Reveal on Scroll ----------
   const revealEls = document.querySelectorAll(".reveal");
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("in");
-          observer.unobserve(entry.target);
-        }
-      });
-    },
-    { threshold: 0.18 }
-  );
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("in");
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.18 });
   revealEls.forEach((el) => observer.observe(el));
 
   // ---------- Cursor Glow ----------
@@ -107,7 +98,7 @@
     glow.style.top = `${e.clientY}px`;
   }, { passive: true });
 
-  // ---------- Light Tilt ----------
+  // ---------- Tilt ----------
   const tiltEls = document.querySelectorAll(".tilt");
   tiltEls.forEach((el) => {
     el.addEventListener("mousemove", (e) => {
@@ -125,84 +116,111 @@
     });
   });
 
-  // ---------- Contact Form ----------
+  // ---------- Form ----------
   const form = document.getElementById("inquiryForm");
-  if (!form) return;
+  if (form) {
+    const nameInput = document.getElementById("name");
+    const emailInput = document.getElementById("email");
+    const messageInput = document.getElementById("message");
 
-  const nameInput = document.getElementById("name");
-  const emailInput = document.getElementById("email");
-  const messageInput = document.getElementById("message");
+    const nameError = document.getElementById("nameError");
+    const emailError = document.getElementById("emailError");
+    const messageError = document.getElementById("messageError");
+    const status = document.getElementById("formStatus");
+    const submitBtn = form.querySelector(".submit-btn");
 
-  const nameError = document.getElementById("nameError");
-  const emailError = document.getElementById("emailError");
-  const messageError = document.getElementById("messageError");
-  const status = document.getElementById("formStatus");
-  const submitBtn = form.querySelector(".submit-btn");
+    const validEmail = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test((v || "").trim());
 
-  const validEmail = (v) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i.test((v || "").trim());
-
-  function clearErrors() {
-    nameError.textContent = "";
-    emailError.textContent = "";
-    messageError.textContent = "";
-  }
-
-  function validate() {
-    clearErrors();
-    let ok = true;
-
-    if ((nameInput.value || "").trim().length < 2) {
-      nameError.textContent = "Please enter your full name.";
-      ok = false;
+    function clearErrors() {
+      nameError.textContent = "";
+      emailError.textContent = "";
+      messageError.textContent = "";
     }
 
-    if (!validEmail(emailInput.value || "")) {
-      emailError.textContent = "Please enter a valid business email.";
-      ok = false;
+    function validate() {
+      clearErrors();
+      let ok = true;
+
+      if ((nameInput.value || "").trim().length < 2) {
+        nameError.textContent = "Please enter your full name.";
+        ok = false;
+      }
+
+      if (!validEmail(emailInput.value || "")) {
+        emailError.textContent = "Please enter a valid business email.";
+        ok = false;
+      }
+
+      if ((messageInput.value || "").trim().length < 12) {
+        messageError.textContent = "Please provide more project details.";
+        ok = false;
+      }
+
+      return ok;
     }
 
-    if ((messageInput.value || "").trim().length < 12) {
-      messageError.textContent = "Please provide more project details.";
-      ok = false;
-    }
+    [nameInput, emailInput, messageInput].forEach((el) => {
+      el?.addEventListener("input", () => {
+        status.textContent = "";
+        status.className = "form-status";
+      });
+    });
 
-    return ok;
-  }
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
 
-  [nameInput, emailInput, messageInput].forEach((el) => {
-    el?.addEventListener("input", () => {
       status.textContent = "";
       status.className = "form-status";
+
+      if (!validate()) {
+        status.textContent = "Please fix the highlighted fields.";
+        status.classList.add("error");
+        return;
+      }
+
+      const original = submitBtn.textContent;
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Sending...";
+
+      try {
+        await new Promise((resolve) => setTimeout(resolve, 900));
+        form.reset();
+        status.textContent = "Inquiry sent successfully. We’ll contact you shortly.";
+        status.classList.add("success");
+      } catch {
+        status.textContent = "Something went wrong. Please try again.";
+        status.classList.add("error");
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = original;
+      }
     });
+  }
+
+  // ---------- Chatbot (MVP UI only) ----------
+  const chatbot = document.getElementById("chatbot");
+  const chatToggle = document.getElementById("chatToggle");
+  const chatClose = document.getElementById("chatClose");
+  const chatPanel = document.getElementById("chatPanel");
+
+  const openChat = () => {
+    if (!chatbot || !chatToggle || !chatPanel) return;
+    chatbot.classList.add("open");
+    chatToggle.setAttribute("aria-expanded", "true");
+    chatPanel.setAttribute("aria-hidden", "false");
+  };
+
+  const closeChat = () => {
+    if (!chatbot || !chatToggle || !chatPanel) return;
+    chatbot.classList.remove("open");
+    chatToggle.setAttribute("aria-expanded", "false");
+    chatPanel.setAttribute("aria-hidden", "true");
+  };
+
+  chatToggle?.addEventListener("click", () => {
+    if (chatbot?.classList.contains("open")) closeChat();
+    else openChat();
   });
 
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    status.textContent = "";
-    status.className = "form-status";
-
-    if (!validate()) {
-      status.textContent = "Please fix the highlighted fields.";
-      status.classList.add("error");
-      return;
-    }
-
-    const original = submitBtn.textContent;
-    submitBtn.disabled = true;
-    submitBtn.textContent = "Sending...";
-
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 900));
-      form.reset();
-      status.textContent = "Inquiry sent successfully. We’ll contact you shortly.";
-      status.classList.add("success");
-    } catch {
-      status.textContent = "Something went wrong. Please try again.";
-      status.classList.add("error");
-    } finally {
-      submitBtn.disabled = false;
-      submitBtn.textContent = original;
-    }
-  });
+  chatClose?.addEventListener("click", closeChat);
 })();
