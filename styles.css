@@ -219,7 +219,7 @@ p{margin:0;color:var(--muted);line-height:1.6}
 .delay-2{transition-delay:.16s}
 .delay-3{transition-delay:.24s}
 
-/* Tilt support */
+/* Tilt */
 .tilt{transform-style:preserve-3d;will-change:transform}
 
 /* Responsive */
