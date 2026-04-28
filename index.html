@@ -5,29 +5,40 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Collective Design — Premium Corporate Gifting</title>
   <meta name="description" content="Collective Design provides bespoke sourcing and branding solutions for premium corporate gifting. Elevating brands through design excellence." />
-  <meta name="theme-color" content="#0a1020" />
-
-  <!-- Prevent favicon 404 -->
+  <meta name="theme-color" content="#070d1f" />
   <link rel="icon" href="data:," />
 
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet" />
 
-  <!-- IMPORTANT: exact filename -->
-  <link rel="stylesheet" href="./styles.css?v=4" />
+  <!-- IMPORTANT: using your current working filename -->
+  <link rel="stylesheet" href="./style.css?v=6" />
 </head>
 <body>
+  <!-- Intro Animation Overlay -->
+  <div id="intro" class="intro" aria-hidden="true">
+    <div class="intro-content">
+      <img src="https://i.ibb.co/jkZJhV6T/Screenshot-28-4-2026-12260.jpg" alt="Collective Design Logo" class="intro-logo" />
+      <h1 class="intro-title">Collective Design</h1>
+      <p class="intro-sub">Elevating brands through design excellence.</p>
+    </div>
+    <button id="skipIntro" class="skip-intro">Skip</button>
+  </div>
+
+  <!-- Background FX -->
+  <div class="bg bg-noise"></div>
+  <div class="bg bg-grid"></div>
+  <div class="bg-orb orb-a"></div>
+  <div class="bg-orb orb-b"></div>
+  <div class="bg-orb orb-c"></div>
+  <div id="cursorGlow" class="cursor-glow" aria-hidden="true"></div>
+
   <header class="site-header" id="top">
-    <div class="container nav-wrap">
-      <a class="brand" href="#top" aria-label="Collective Design Home">
-        <img
-          src="https://i.ibb.co/jkZJhV6T/Screenshot-28-4-2026-12260.jpg"
-          alt="Collective Design Logo"
-          class="brand-logo"
-        />
-        <div class="brand-text-wrap">
+    <div class="container nav-wrap glass">
+      <a href="#top" class="brand" aria-label="Collective Design Home">
+        <img src="https://i.ibb.co/jkZJhV6T/Screenshot-28-4-2026-12260.jpg" alt="Collective Design Logo" class="brand-logo" />
+        <div class="brand-meta">
           <span class="brand-name">Collective Design</span>
           <span class="brand-sub">Bespoke Corporate Gifting</span>
         </div>
@@ -44,11 +55,14 @@
   </header>
 
   <main>
-    <section class="hero section">
+    <section class="section hero" id="home">
       <div class="container hero-grid">
-        <div class="hero-copy">
-          <p class="eyebrow">Premium Corporate Gifting & Branding</p>
-          <h1>Elevating brands through design excellence.</h1>
+        <div class="hero-copy reveal">
+          <p class="eyebrow">PREMIUM CORPORATE GIFTING & BRANDING</p>
+          <h1 class="headline">
+            Elevating brands through
+            <span>design excellence.</span>
+          </h1>
           <p class="lead">
             We are not a traditional online store. We provide tailored sourcing and branding
             solutions designed around your goals, audience, and brand standards.
@@ -59,11 +73,9 @@
           </div>
         </div>
 
-        <aside class="hero-card">
+        <aside class="hero-card reveal delay-1 tilt">
           <h2>Not product listings.<br />Brand experiences.</h2>
-          <p>
-            Every project is curated from scratch to match your identity and business context.
-          </p>
+          <p>Every project is curated from scratch to match your identity and business context.</p>
           <ul>
             <li>Custom sourcing strategy</li>
             <li>Premium brand application</li>
@@ -76,31 +88,28 @@
 
     <section id="services" class="section">
       <div class="container">
-        <div class="section-head">
-          <p class="eyebrow">Our Services</p>
-          <h2>Bespoke sourcing and branding, done properly.</h2>
+        <div class="section-head reveal">
+          <p class="eyebrow">SERVICES</p>
+          <h2>Bespoke sourcing and branding, done at a premium standard.</h2>
         </div>
 
         <div class="cards">
-          <article class="card">
+          <article class="card reveal tilt">
             <span class="badge">01</span>
             <h3>Discovery & Strategy</h3>
             <p>We align goals, audience, budget, and timeline before curation starts.</p>
           </article>
-
-          <article class="card">
+          <article class="card reveal delay-1 tilt">
             <span class="badge">02</span>
             <h3>Premium Sourcing</h3>
-            <p>We source high-quality options tailored to your campaign purpose and brand tier.</p>
+            <p>We source high-quality options tailored to campaign intent and brand tier.</p>
           </article>
-
-          <article class="card">
+          <article class="card reveal delay-2 tilt">
             <span class="badge">03</span>
             <h3>Brand Integration</h3>
-            <p>We refine placement, finishes, and packaging details for cohesive brand impact.</p>
+            <p>Finishes, placements, and details are refined for cohesive brand impact.</p>
           </article>
-
-          <article class="card">
+          <article class="card reveal delay-3 tilt">
             <span class="badge">04</span>
             <h3>Execution & Delivery</h3>
             <p>We manage approvals, production, and handoff with clear communication.</p>
@@ -111,24 +120,24 @@
 
     <section id="process" class="section section-alt">
       <div class="container">
-        <div class="section-head">
-          <p class="eyebrow">Process</p>
-          <h2>How we move from brief to result</h2>
+        <div class="section-head reveal">
+          <p class="eyebrow">PROCESS</p>
+          <h2>How we move from brief to final impact</h2>
         </div>
 
         <div class="timeline">
-          <article class="step"><span>01</span><h3>Brief</h3><p>Goals, audience, budget, timeline.</p></article>
-          <article class="step"><span>02</span><h3>Curate</h3><p>Tailored concepts and quality options.</p></article>
-          <article class="step"><span>03</span><h3>Refine</h3><p>Branding and finishing approvals.</p></article>
-          <article class="step"><span>04</span><h3>Deliver</h3><p>Production oversight and final handoff.</p></article>
+          <article class="step reveal"><span>01</span><h3>Brief</h3><p>Goals, audience, budget, timeline.</p></article>
+          <article class="step reveal delay-1"><span>02</span><h3>Curate</h3><p>Tailored concepts and quality options.</p></article>
+          <article class="step reveal delay-2"><span>03</span><h3>Refine</h3><p>Branding and finishing approvals.</p></article>
+          <article class="step reveal delay-3"><span>04</span><h3>Deliver</h3><p>Production oversight and handoff.</p></article>
         </div>
       </div>
     </section>
 
     <section id="contact" class="section">
       <div class="container contact-grid">
-        <div class="contact-copy">
-          <p class="eyebrow">Contact Us</p>
+        <div class="contact-copy reveal">
+          <p class="eyebrow">CONTACT US</p>
           <h2>Let’s create something extraordinary.</h2>
           <p>Reach out to inquire or request custom ideas for your next corporate campaign.</p>
           <div class="contact-meta">
@@ -137,7 +146,7 @@
           </div>
         </div>
 
-        <form id="inquiryForm" class="contact-form" novalidate>
+        <form id="inquiryForm" class="contact-form reveal delay-1" novalidate>
           <label for="name">Full Name</label>
           <input id="name" type="text" placeholder="Jane Smith" required />
           <small id="nameError" class="error"></small>
@@ -164,7 +173,7 @@
     </div>
   </footer>
 
-  <!-- IMPORTANT: exact filename -->
-  <script src="./script.js?v=4"></script>
+  <!-- IMPORTANT: using your current working filename -->
+  <script src="./script-js?v=6"></script>
 </body>
 </html>
