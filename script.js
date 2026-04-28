@@ -1,5 +1,5 @@
 (() => {
-  // ---------- Theme Toggle ----------
+  // Theme toggle
   const root = document.documentElement;
   const toggle = document.getElementById("themeToggle");
   const savedTheme = localStorage.getItem("cd_theme");
@@ -13,7 +13,7 @@
     localStorage.setItem("cd_theme", next);
   });
 
-  // ---------- Intro ----------
+  // Intro
   const intro = document.getElementById("intro");
   const introLogo = document.getElementById("introLogo");
   const skipIntro = document.getElementById("skipIntro");
@@ -78,7 +78,7 @@
     skipIntro?.addEventListener("click", closeIntro);
   }
 
-  // ---------- Reveal on Scroll ----------
+  // Reveal on scroll
   const revealEls = document.querySelectorAll(".reveal");
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
@@ -90,7 +90,7 @@
   }, { threshold: 0.18 });
   revealEls.forEach((el) => observer.observe(el));
 
-  // ---------- Cursor Glow ----------
+  // Cursor glow
   const glow = document.getElementById("cursorGlow");
   window.addEventListener("pointermove", (e) => {
     if (!glow) return;
@@ -98,7 +98,7 @@
     glow.style.top = `${e.clientY}px`;
   }, { passive: true });
 
-  // ---------- Tilt ----------
+  // Tilt effect
   const tiltEls = document.querySelectorAll(".tilt");
   tiltEls.forEach((el) => {
     el.addEventListener("mousemove", (e) => {
@@ -116,7 +116,7 @@
     });
   });
 
-  // ---------- Form ----------
+  // Form validation
   const form = document.getElementById("inquiryForm");
   if (form) {
     const nameInput = document.getElementById("name");
@@ -197,7 +197,7 @@
     });
   }
 
-  // ---------- Chatbot (MVP UI only) ----------
+  // Chatbot (MVP UI)
   const chatbot = document.getElementById("chatbot");
   const chatToggle = document.getElementById("chatToggle");
   const chatClose = document.getElementById("chatClose");
@@ -223,4 +223,20 @@
   });
 
   chatClose?.addEventListener("click", closeChat);
+
+  // Back to top
+  const backToTopBtn = document.getElementById("backToTop");
+
+  const updateBackToTopVisibility = () => {
+    if (!backToTopBtn) return;
+    if (window.scrollY > 420) backToTopBtn.classList.add("show");
+    else backToTopBtn.classList.remove("show");
+  };
+
+  window.addEventListener("scroll", updateBackToTopVisibility, { passive: true });
+  updateBackToTopVisibility();
+
+  backToTopBtn?.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
 })();
