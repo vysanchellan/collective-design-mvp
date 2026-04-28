@@ -10,20 +10,23 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
 
-  <!-- IMPORTANT: using your current working filename -->
-  <link rel="stylesheet" href="./style.css?v=6" />
+  <!-- Correct filename -->
+  <link rel="stylesheet" href="./styles.css?v=8" />
 </head>
 <body>
-  <!-- Intro Animation Overlay -->
+  <!-- Intro -->
   <div id="intro" class="intro" aria-hidden="true">
     <div class="intro-content">
       <img src="https://i.ibb.co/jkZJhV6T/Screenshot-28-4-2026-12260.jpg" alt="Collective Design Logo" class="intro-logo" />
       <h1 class="intro-title">Collective Design</h1>
       <p class="intro-sub">Elevating brands through design excellence.</p>
     </div>
-    <button id="skipIntro" class="skip-intro">Skip</button>
+    <button id="skipIntro" class="skip-intro" type="button">Skip</button>
   </div>
 
   <!-- Background FX -->
@@ -44,13 +47,13 @@
         </div>
       </a>
 
-      <nav class="nav">
+      <nav class="nav" aria-label="Primary navigation">
         <a href="#services">Services</a>
         <a href="#process">Process</a>
         <a href="#contact">Contact</a>
       </nav>
 
-      <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">☀︎ / ☾</button>
+      <button id="themeToggle" class="theme-toggle" type="button" aria-label="Toggle theme">☀︎ / ☾</button>
     </div>
   </header>
 
@@ -59,13 +62,10 @@
       <div class="container hero-grid">
         <div class="hero-copy reveal">
           <p class="eyebrow">PREMIUM CORPORATE GIFTING & BRANDING</p>
-          <h1 class="headline">
-            Elevating brands through
-            <span>design excellence.</span>
-          </h1>
+          <h1 class="headline">Elevating brands through <span>design excellence.</span></h1>
           <p class="lead">
-            We are not a traditional online store. We provide tailored sourcing and branding
-            solutions designed around your goals, audience, and brand standards.
+            We are not a traditional online store. We provide tailored sourcing and branding solutions
+            designed around your goals, audience, and brand standards.
           </p>
           <div class="hero-actions">
             <a href="#contact" class="btn btn-primary">Book Consultation</a>
@@ -148,15 +148,15 @@
 
         <form id="inquiryForm" class="contact-form reveal delay-1" novalidate>
           <label for="name">Full Name</label>
-          <input id="name" type="text" placeholder="Jane Smith" required />
+          <input id="name" name="name" type="text" autocomplete="name" placeholder="Jane Smith" required />
           <small id="nameError" class="error"></small>
 
           <label for="email">Business Email</label>
-          <input id="email" type="email" placeholder="jane@company.com" required />
+          <input id="email" name="email" type="email" autocomplete="email" placeholder="jane@company.com" required />
           <small id="emailError" class="error"></small>
 
           <label for="message">Project Brief</label>
-          <textarea id="message" rows="6" placeholder="Tell us your goals, timeline, and budget..." required></textarea>
+          <textarea id="message" name="message" rows="6" autocomplete="off" placeholder="Tell us your goals, timeline, and budget..." required></textarea>
           <small id="messageError" class="error"></small>
 
           <button class="btn btn-primary submit-btn" type="submit">Send Inquiry</button>
@@ -173,7 +173,7 @@
     </div>
   </footer>
 
-  <!-- IMPORTANT: using your current working filename -->
-  <script src="./script-js?v=6"></script>
+  <!-- Correct filename -->
+  <script src="./script.js?v=8"></script>
 </body>
 </html>
