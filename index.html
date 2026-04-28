@@ -8,6 +8,7 @@
   <meta name="theme-color" content="#070d1f" />
   <link rel="icon" href="data:," />
 
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -15,17 +16,43 @@
     rel="stylesheet"
   />
 
-  <!-- Correct filename -->
-  <link rel="stylesheet" href="./styles.css?v=8" />
+  <!-- Preload splash/logo image to prevent partial render -->
+  <link
+    rel="preload"
+    as="image"
+    href="https://i.ibb.co/jkZJhV6T/Screenshot-28-4-2026-12260.jpg"
+    fetchpriority="high"
+  />
+
+  <link rel="stylesheet" href="./styles.css?v=10" />
 </head>
 <body>
-  <!-- Intro -->
+  <!-- Intro / Splash -->
   <div id="intro" class="intro" aria-hidden="true">
+    <div class="intro-bg"></div>
+    <div class="intro-grain"></div>
+
     <div class="intro-content">
-      <img src="https://i.ibb.co/jkZJhV6T/Screenshot-28-4-2026-12260.jpg" alt="Collective Design Logo" class="intro-logo" />
+      <div class="intro-logo-wrap">
+        <img
+          id="introLogo"
+          src="https://i.ibb.co/jkZJhV6T/Screenshot-28-4-2026-12260.jpg"
+          alt="Collective Design Logo"
+          class="intro-logo"
+          decoding="async"
+          loading="eager"
+          fetchpriority="high"
+        />
+      </div>
+
       <h1 class="intro-title">Collective Design</h1>
       <p class="intro-sub">Elevating brands through design excellence.</p>
+
+      <div class="intro-progress" aria-hidden="true">
+        <span></span>
+      </div>
     </div>
+
     <button id="skipIntro" class="skip-intro" type="button">Skip</button>
   </div>
 
@@ -40,7 +67,13 @@
   <header class="site-header" id="top">
     <div class="container nav-wrap glass">
       <a href="#top" class="brand" aria-label="Collective Design Home">
-        <img src="https://i.ibb.co/jkZJhV6T/Screenshot-28-4-2026-12260.jpg" alt="Collective Design Logo" class="brand-logo" />
+        <img
+          src="https://i.ibb.co/jkZJhV6T/Screenshot-28-4-2026-12260.jpg"
+          alt="Collective Design Logo"
+          class="brand-logo"
+          decoding="async"
+          loading="eager"
+        />
         <div class="brand-meta">
           <span class="brand-name">Collective Design</span>
           <span class="brand-sub">Bespoke Corporate Gifting</span>
@@ -173,7 +206,6 @@
     </div>
   </footer>
 
-  <!-- Correct filename -->
-  <script src="./script.js?v=8"></script>
+  <script src="./script.js?v=10"></script>
 </body>
 </html>
