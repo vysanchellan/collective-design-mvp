@@ -37,10 +37,14 @@ body{
   overflow-x:hidden;
 }
 
-/* ---------- Intro (Improved) ---------- */
+/* ---------- Intro (Improved + Optical Center Fix) ---------- */
 .intro{
-  position:fixed; inset:0; z-index:9999;
-  display:grid; place-items:center;
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  display:grid;
+  place-items:center;
+  place-content:center;
   overflow:hidden;
   transition:opacity .75s ease, visibility .75s ease;
 }
@@ -64,8 +68,12 @@ body{
 }
 .intro-content{
   position:relative;
+  z-index:2;
   text-align:center;
   padding:24px;
+  width:min(92vw, 720px);
+  margin-inline:auto;
+  transform:translateY(-6vh); /* optical center correction */
   animation:introRise .8s cubic-bezier(.2,.8,.2,1) both;
 }
 .intro-logo-wrap{
@@ -118,7 +126,10 @@ body{
   animation:introProgress 2.4s ease forwards;
 }
 .skip-intro{
-  position:absolute; top:20px; right:20px;
+  position:absolute;
+  top:20px;
+  right:20px;
+  z-index:3;
   border:1px solid rgba(255,255,255,.28);
   background:rgba(255,255,255,.08);
   color:#fff;
@@ -127,8 +138,8 @@ body{
   cursor:pointer;
 }
 @keyframes introRise{
-  from{opacity:0; transform:translateY(18px) scale(.985)}
-  to{opacity:1; transform:translateY(0) scale(1)}
+  from{opacity:0; transform:translateY(calc(-6vh + 18px)) scale(.985)}
+  to{opacity:1; transform:translateY(-6vh) scale(1)}
 }
 @keyframes introProgress{
   from{width:0%}
@@ -304,6 +315,7 @@ p{margin:0;color:var(--muted);line-height:1.6}
   .timeline{grid-template-columns:repeat(2,1fr)}
 }
 @media (max-width:780px){
+  .intro-content{transform:translateY(0)} /* no upward shift on smaller screens */
   .nav{display:none}
   .cards{grid-template-columns:1fr}
   .timeline{grid-template-columns:1fr}
