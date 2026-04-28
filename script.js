@@ -3,9 +3,11 @@
   const root = document.documentElement;
   const toggle = document.getElementById("themeToggle");
   const saved = localStorage.getItem("cd_theme");
+
   if (saved === "dark" || saved === "light") {
     root.setAttribute("data-theme", saved);
   }
+
   toggle?.addEventListener("click", () => {
     const current = root.getAttribute("data-theme") || "dark";
     const next = current === "dark" ? "light" : "dark";
@@ -28,8 +30,10 @@
   };
 
   if (introSeen) {
-    intro?.classList.add("hidden");
-    if (intro) intro.style.display = "none";
+    if (intro) {
+      intro.classList.add("hidden");
+      intro.style.display = "none";
+    }
   } else {
     setTimeout(closeIntro, 2600);
   }
@@ -76,6 +80,7 @@
       const dy = (y - cy) / cy;
       el.style.transform = `perspective(900px) rotateX(${(-dy * 4).toFixed(2)}deg) rotateY(${(dx * 5).toFixed(2)}deg) translateY(-2px)`;
     });
+
     el.addEventListener("mouseleave", () => {
       el.style.transform = "perspective(900px) rotateX(0deg) rotateY(0deg) translateY(0)";
     });
@@ -111,14 +116,17 @@
       nameError.textContent = "Please enter your full name.";
       ok = false;
     }
+
     if (!validEmail(emailInput.value || "")) {
       emailError.textContent = "Please enter a valid business email.";
       ok = false;
     }
+
     if ((messageInput.value || "").trim().length < 12) {
       messageError.textContent = "Please provide more project details.";
       ok = false;
     }
+
     return ok;
   }
 
@@ -131,6 +139,7 @@
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
+
     status.textContent = "";
     status.className = "form-status";
 
@@ -145,7 +154,7 @@
     submitBtn.textContent = "Sending...";
 
     try {
-      await new Promise((r) => setTimeout(r, 900));
+      await new Promise((resolve) => setTimeout(resolve, 900));
       form.reset();
       status.textContent = "Inquiry sent successfully. We’ll contact you shortly.";
       status.classList.add("success");
